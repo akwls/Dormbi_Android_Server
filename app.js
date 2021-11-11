@@ -6,4 +6,4 @@ app.get('/', (req, res) => {
   res.send('hello node');
 })
 
-app.listen(3000, () => console.log('3000번 포트에서 대기중'));
+app.listen(4000, () => console.log('4000번 포트에서 대기중'));
