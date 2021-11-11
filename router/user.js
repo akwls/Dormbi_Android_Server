@@ -1,7 +1,11 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const router = express();
-const bcrypt = require("bcryptjs");
+//const bcrypt = require("bcryptjs");
 const connection = require('../mysql');
+
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.json());
 
 router.use(express.urlencoded({
   extended: false
@@ -12,21 +16,36 @@ router.get('/', function (req, res) {
   res.send('user');
 });
 
+router.get('/user', function (req, res) {
+  res.send('user');
+});
+
+let user_test = {
+  id : "admin",
+  pw : "11111111",
+  name : "admin",
+  num: "1111",
+  tel: "01011111111",
+  ptel:"01022222222",
+  loc : "서울"
+}
+
 //회원가입 기능 구현
 router.post('/join', function (req, res) {
   const user = req.body;
+ // const user = user_test;
   const salt = 10;
-  const password = bcrypt.hashSync(user.password, salt); // 비밀번호 암호화
+  //const password = bcrypt.hashSync(user.password, salt); // 비밀번호 암호화
 
 
   var sqlEmailCheck = 'select * from user where UserID = ?';
-  connection.query(sqlEmailCheck, user.email, function (err, result) {
+  connection.query(sqlEmailCheck, user.id, function (err, result) {
     if (result.length !== 0) {
       res.json({
         message: "이미 가입된 아이디입니다."
       })
     } else {
-      connection.query(`INSERT INTO user VALUES ('${user.id}', '${user.pw}', '${user.name}', '${user.num}', '${user.tel}', '${user.ptel}', '${user.loc}')`, function (err, result) {
+      connection.query(`INSERT INTO USER VALUES ('${user.id}', '${user.pw}', '${user.name}', '${user.num}', '${user.tel}', '${user.ptel}', '${user.loc}')`, function (err, result) {
         let resultCode = 404;
         let message = '에러가 발생했습니다';
         if (err)
@@ -167,4 +186,5 @@ router.post('/update', function (req, res) {
   })
 });
 */
+router.listen(3000); // port 
 module.exports = router;
