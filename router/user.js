@@ -32,8 +32,8 @@ let user_test = {
 
 //회원가입 기능 구현
 router.post('/join', function (req, res) {
-  const user = req.body;
- // const user = user_test;
+  //const user = req.body;
+ const user = user_test;
   const salt = 10;
   //const password = bcrypt.hashSync(user.password, salt); // 비밀번호 암호화
 
