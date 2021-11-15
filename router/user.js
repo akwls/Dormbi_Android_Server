@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcryptjs = require("bcrypt");
 const router = express();
-//const bcrypt = require("bcryptjs");
+
 const connection = require('../mysql');
 
 router.use(bodyParser.urlencoded({extended: false}));
@@ -20,11 +21,11 @@ router.get('/user', function (req, res) {
   res.send('user');
 });
 
-let user_test = {
-  id : "admin",
+let user_join_test = {
+  id : "admin1",
   pw : "11111111",
-  name : "admin",
-  num: "1111",
+  name : "김유나",
+  num: "2104",
   tel: "01011111111",
   ptel:"01022222222",
   loc : "서울"
@@ -32,100 +33,89 @@ let user_test = {
 
 //회원가입 기능 구현
 router.post('/join', function (req, res) {
-  //const user = req.body;
- const user = user_test;
+  const user = req.body;
+  //const user = user_join_test;
   const salt = 10;
-  //const password = bcrypt.hashSync(user.password, salt); // 비밀번호 암호화
+  const password = bcryptjs.hashSync(user.pw, salt); // 비밀번호 암호화
+  var sqlIDCheck = 'select * from user where UserID = ?';
+  var sqlRoomCheck = 'select * from student where StuNO = ? && StuName = ?';
+  var query = sqlIDCheck;
 
-
-  var sqlEmailCheck = 'select * from user where UserID = ?';
-  connection.query(sqlEmailCheck, user.id, function (err, result) {
+  connection.query(sqlIDCheck, user.id, function(err, result) {
     if (result.length !== 0) {
       res.json({
         message: "이미 가입된 아이디입니다."
       })
-    } else {
-      connection.query(`INSERT INTO USER VALUES ('${user.id}', '${user.pw}', '${user.name}', '${user.num}', '${user.tel}', '${user.ptel}', '${user.loc}')`, function (err, result) {
-        let resultCode = 404;
-        let message = '에러가 발생했습니다';
-        if (err)
-          console.log(err);
-
-        else {
-          resultCode = 200;
-          message = '회원가입에 성공했습니다.';
-        }
-        res.json({
-          'code': resultCode,
-          'message': message
+    }
+    else {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        connection.query(sqlRoomCheck, [user.num, user.name], function(err, result1) {
+          if(result1.length !== 1) {
+            res.json({
+              message: "기숙사생 정보와 일치하지 않습니다."
+            })
+          }
+          else {
+            if(err) {
+              console.log(err);
+            }
+            else {
+              connection.query(`INSERT INTO USER VALUES ('${user.id}', '${password}', '${user.name}', '${user.num}', '${user.tel}', '${user.ptel}', '${user.loc}')`, function (err, result2) {
+                let resultCode = 404;
+                let message = '에러가 발생했습니다';
+                if (err)
+                  console.log(err);
+        
+                else {
+                  resultCode = 200;
+                  message = '회원가입에 성공했습니다.';
+                }
+                res.json({
+                  'code': resultCode,
+                  'message': message
+                });
+              })
+            }
+          }
         });
-      })
+      }
     }
   });
 });
 
-/*
 //로그인
 router.post('/login', function (req, res) {
-  const email = req.body.email;
-  const pw = req.body.password;
-  const sql = 'select * from user where email = ?';
-
-  connection.query(sql, email, function (err, result) {
+  const id = req.body.id;
+  const pw = req.body.pw;
+  const sql = 'select * from USER where UserID = ?';
+  connection.query(sql, id, function (err, result) {
     let resultCode = 404;
     let message = '에러가 발생했습니다';
-    let step;
-    let stuName;
-    let date;
-    let rank_;
-    let rank;
-    let student_num;
     if (err)
       console.log(err);
     else {
       if (result.length === 0) {
         resultCode = 204;
         message = '가입하지 않은 계정입니다.';
-      } else if (!(bcrypt.compareSync(pw, result[0].password))) {
+      } else if (!(bcryptjs.compareSync(pw, result[0].UserPW))) {
         resultCode = 204;
         message = '비밀번호가 일치하지 않습니다.';
       } else {
-        let rankSql = 'SELECT email, rank() over(order by step desc) AS ranking FROM user'
-        connection.query(rankSql, function (err, ret) {
-          console.log(ret);
-          for (let i = 0;; i++) {
-            if (ret[i].email === email) {
-              rank_ = ret[i].ranking;
-              break;
-            }
-          }
-          console.log(result[0].date);
-          resultCode = 200;
-          message = '로그인 되었습니다.';
-          step = result[0].step;
-          student_num = result[0].student_num;
-          stuName = result[0].name;
-          date = result[0].date;
-          rank = rank_;
-          console.log('랭킹 : ', rank, rank_);
-          res.json({
-            'code': resultCode,
-            'message': message,
-            'step': step,
-            'name': stuName,
-            'student_num' : student_num,
-            'rank': rank,
-            'date': date
-          });
-
-        })
-        
+        resultCode = 200;
+        message = '로그인 되었습니다.';
+        res.json({
+          'code': resultCode,
+          'message': message,
+        });
       }
     }
   })
-
 });
 
+/*
 router.get('/list', function (req, res) {
   let order = req.query.order;
   let sql;
@@ -144,7 +134,9 @@ router.get('/list', function (req, res) {
     console.log("result : " + JSON.stringify(result));
   });
 });
+*/
 
+/*
 router.post('/pass', function (req, res) {
   const email = req.query.email;
   const step = req.query.step;
@@ -158,7 +150,9 @@ router.post('/pass', function (req, res) {
     })
   })
 });
+*/
 
+/*
 router.post('/update', function (req, res) {
   const email = req.query.email;
   const stuNum = req.query.student_num;
@@ -186,5 +180,6 @@ router.post('/update', function (req, res) {
   })
 });
 */
-router.listen(3000); // port 
+
+//router.listen(3000); // port 
 module.exports = router;
