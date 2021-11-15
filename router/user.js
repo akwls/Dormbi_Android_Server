@@ -33,8 +33,8 @@ let user_join_test = {
 
 //회원가입 기능 구현
 router.post('/join', function (req, res) {
-  // const user = req.body;
-  const user = user_join_test;
+  const user = req.body;
+  // const user = user_join_test;
   const salt = 10;
   const password = bcryptjs.hashSync(user.UserPW, salt); // 비밀번호 암호화
   var sqlIDCheck = 'select * from USER where UserID = ?';
@@ -88,10 +88,10 @@ router.post('/join', function (req, res) {
 
 //로그인
 router.post('/login', function (req, res) {
-  // const id = req.body.UserID;
-  // const pw = req.body.UserPW;
-  const id = user_join_test.UserID;
-  const pw = user_join_test.UserPW;
+  const id = req.body.UserID;
+  const pw = req.body.UserPW;
+  // const id = user_join_test.UserID;
+  // const pw = user_join_test.UserPW;
   const sql = 'select * from USER where UserID = ?';
   connection.query(sql, id, function (err, result) {
     let resultCode = 404;
