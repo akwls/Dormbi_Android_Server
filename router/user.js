@@ -41,7 +41,7 @@ router.post('/join', function (req, res) {
   var sqlRoomCheck = 'select * from student where StuNO = ? && StuName = ?';
   var query = sqlIDCheck;
 
-  connection.query(sqlIDCheck, user.id, function(err, result) {
+  connection.query(sqlIDCheck, user.UserID, function(err, result) {
     if (result.length !== 0) {
       res.json({
         message: "이미 가입된 아이디입니다."
