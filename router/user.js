@@ -181,5 +181,5 @@ router.post('/update', function (req, res) {
 });
 */
 
-//router.listen(3000); // port 
+router.listen(3000); // port 
 module.exports = router;
