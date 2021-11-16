@@ -95,6 +95,8 @@ router.post('/login', function (req, res) {
   // const id = user_join_test.UserID;
   // const pw = user_join_test.UserPW;
   var num, name, room, loc, washday, washtime, washnum, good, bad;
+  var stusql = 'select * from student where StuNO = ?';
+  var roomsql = 'select * from ROOM where RoomNO = ';
   const sql = 'select * from USER where UserID = ?';
   connection.query(sql, id, function (err, result) {
     let resultCode = 404;
@@ -108,14 +110,14 @@ router.post('/login', function (req, res) {
       } else if (!(bcryptjs.compareSync(pw, result[0].UserPW))) {
         resultCode = 204;
         message = '비밀번호가 일치하지 않습니다.';
-      } else {
+      } 
+      else {
         resultCode = 200;
         message = '로그인 되었습니다.';
         num = result[0].UserNO;
         name = result[0].UserNAME;
-        
         loc = result[0].UserLOC;
-        connection.query(`select * from student where StuNO = ${num}`, function(err, result1) {
+        connection.query(stusql, num, function(err, result1) {
           if(err) {
             console.log(err);
           }
@@ -123,7 +125,7 @@ router.post('/login', function (req, res) {
             room = result1[0].StuRoom;
             good = result1[0].good;
             bad = result1[0].bad;
-            connection.query(`select * from ROOM where RoomNO = ${room}`, function(err, result3) {
+            connection.query(roomsql, room, function(err, result3) {
               if(err) {
                 console.log(room);
                 console.log(err);
