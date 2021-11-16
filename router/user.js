@@ -131,9 +131,9 @@ router.post('/login', function (req, res) {
             console.log(err);
           }
           else {
-            washday = result3.WashDay;
-            washnum = result3.WashNum;
-            washtime = result3.WashTime;
+            washday = result3[0].WashDay;
+            washnum = result3[0].WashNum;
+            washtime = result3[0].WashTime;
           }
         });
         
