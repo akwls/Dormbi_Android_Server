@@ -33,17 +33,19 @@ create table student (
     StuNO decimal(4),
     StuName varchar(20) NOT NULL,
     StuRoom decimal(3) NOT NULL,
+    good int default 0,
+    bad int default 0,
     constraint PK_NO primary key(StuNO),
     constraint FK_RoomNO foreign key(StuRoom) references ROOM(RoomNO)
 );
 
 INSERT INTO student VALUES 
-(2104, "김유나", 415), 
-(2107, "김하진", 415),
-(2110, "엄지윤", 415),
-(2113, "윤채원", 416),
-(2117, "조해정", 416),
-(2119, "황예림", 416)
+(2104, "김유나", 415, 0, 0), 
+(2107, "김하진", 415, 0, 0),
+(2110, "엄지윤", 415,0 ,0 ),
+(2113, "윤채원", 416, 0, 0),
+(2117, "조해정", 416, 0, 0),
+(2119, "황예림", 416, 0 ,0)
 ;
 
 

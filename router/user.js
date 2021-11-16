@@ -40,6 +40,7 @@ router.post('/join', function (req, res) {
   var sqlIDCheck = 'select * from USER where UserID = ?';
   var sqlRoomCheck = 'select * from student where StuNO = ? && StuName = ?';
   var query = sqlIDCheck;
+  
 
   connection.query(sqlIDCheck, user.UserID, function(err, result) {
     if (result.length !== 0) {
@@ -72,6 +73,7 @@ router.post('/join', function (req, res) {
                 else {
                   resultCode = 200;
                   message = '회원가입에 성공했습니다.';
+                  
                 }
                 res.json({
                   'code': resultCode,
@@ -92,6 +94,7 @@ router.post('/login', function (req, res) {
   const pw = req.body.UserPW;
   // const id = user_join_test.UserID;
   // const pw = user_join_test.UserPW;
+  var num, name, room, loc, washday, washtime, washnum, good, bad;
   const sql = 'select * from USER where UserID = ?';
   connection.query(sql, id, function (err, result) {
     let resultCode = 404;
@@ -108,10 +111,46 @@ router.post('/login', function (req, res) {
       } else {
         resultCode = 200;
         message = '로그인 되었습니다.';
+        num = result[0].UserNO;
+        name = result[0].UserNAME;
+        
+        loc = result[0].UserLOC;
+        connection.query(`select * from student where StuNO = ${num}`, function(err, result1) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            room = result1[0].StuRoom;
+            good = result1[0].good;
+            bad = result1[0].bad;
+          }
+          
+        });
+        connection.query(`select * from ROOM where RoomNO = ${room}`, function(err, result3) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            washday = result3.WashDay;
+            washnum = result3.WashNum;
+            washtime = result3.WashTime;
+          }
+        });
+        
         res.json({
           'code': resultCode,
           'message': message,
+          'num' : num,
+          'name': name,
+          'room': room,
+          'loc' : loc,
+          'washday': washday,
+          'washtime': washtime,
+          'washnum': washnum,
+          'good': good,
+          'bad': bad
         });
+                
       }
     }
   })
