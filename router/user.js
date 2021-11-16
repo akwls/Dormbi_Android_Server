@@ -123,20 +123,21 @@ router.post('/login', function (req, res) {
             room = result1[0].StuRoom;
             good = result1[0].good;
             bad = result1[0].bad;
+            connection.query(`select * from ROOM where RoomNO = ${room}`, function(err, result3) {
+              if(err) {
+                console.log(room);
+                console.log(err);
+              }
+              else {
+                washday = result3[0].WashDay;
+                washnum = result3[0].WashNum;
+                washtime = result3[0].WashTime;
+              }
+            });
           }
           
         });
-        connection.query(`select * from ROOM where RoomNO = ${room}`, function(err, result3) {
-          if(err) {
-            console.log(room);
-            console.log(err);
-          }
-          else {
-            washday = result3[0].WashDay;
-            washnum = result3[0].WashNum;
-            washtime = result3[0].WashTime;
-          }
-        });
+        
         
         res.json({
           'code': resultCode,
