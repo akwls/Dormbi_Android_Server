@@ -144,71 +144,26 @@ router.post('/login', function (req, res) {
   })
 });
 
-/*
-router.get('/list', function (req, res) {
-  let order = req.query.order;
-  let sql;
-
-  if (order == 0) sql = 'select student_num, name, step from user';
-  else if (order == 1) sql = 'select student_num, name, step from user order by student_num ASC';
-  else if (order == 2) sql = 'select student_num, name, step from user order by student_num DESC';
-  else if (order == 3) sql = 'select student_num, name, step from user order by step DESC';
-
-  connection.query(sql, function (err, result) {
-    if (err) {
+// 상벌점 수정
+router.post('/score', function(req, res) {
+  const good = req.body.good;
+  const bad = req.body.bad;
+  const name = req.body.StuName;
+  const num = req.body.StuNO;
+  connection.query(`update student good = ${good}, bad = ${bad} where StuNO = ${num} && StuName = ${name}`, function(err, result) {
+    if(err) {
       console.log(err);
-      return res.sendStatus(400);
     }
-    res.json(result);
-    console.log("result : " + JSON.stringify(result));
-  });
-});
-*/
-
-/*
-router.post('/pass', function (req, res) {
-  const email = req.query.email;
-  const step = req.query.step;
-  console.log(step);
-  var sql = 'UPDATE user SET step = ? WHERE email = ?';
-  let params = [step, email];
-  connection.query(sql, params, function (err, result) {
-    console.log("step : ", step);
-    res.json({
-      'step' : step
-    })
+    else {
+      res.json({
+        'message' : '정보가 변경되었습니다.'
+      })
+    }
+    
   })
-});
-*/
 
-/*
-router.post('/update', function (req, res) {
-  const email = req.query.email;
-  const stuNum = req.query.student_num;
-  const name = req.query.name;
 
-  var sql = 'UPDATE user SET student_num = ?, name = ? WHERE email = ?';
-  let params = [stuNum, name, email];
-
-  if(stuNum === -1) {
-    sql = 'UPDATE user SET name = ? WHERE email = ?';
-    params = [name, email];
-  }else if(name === 'x'){
-    var sql = 'UPDATE user SET student_num = ? WHERE email = ?';
-    params = [stuNum, email];
-  }
-
-  console.log(sql);
-  console.log(params);
-  
-  connection.query(sql, params, function (err, result) {
-    console.log("result : " + JSON.stringify(result));
-    res.json({
-      'message' : '정보가 변경되었습니다.'
-    })
-  })
-});
-*/
+})
 
 router.listen(3000); // port 
 module.exports = router;
