@@ -128,6 +128,7 @@ router.post('/login', function (req, res) {
         });
         connection.query(`select * from ROOM where RoomNO = ${room}`, function(err, result3) {
           if(err) {
+            console.log(room);
             console.log(err);
           }
           else {
