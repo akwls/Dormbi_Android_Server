@@ -97,6 +97,7 @@ router.post('/login', function (req, res) {
   var num, name, room, loc, washday, washtime, washnum, good, bad;
   var stusql = 'select * from student where StuNO = ?';
   var roomsql = 'select * from ROOM where RoomNO = ?';
+  const login_sql = "select C.UserID, C.UserPW, A.RoomNO, A.WashNum, A.WashDay, A.WashTime, B.good, B.bad from ROOM A, student B, USER C where C.UserID = ? && B.StuNO = C.UserNO && A.RoomNO = B.StuRoom";
   const sql = 'select * from USER where UserID = ?';
   connection.query(sql, id, function (err, result) {
     let resultCode = 404;
