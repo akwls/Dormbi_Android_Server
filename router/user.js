@@ -99,7 +99,7 @@ router.post('/login', function (req, res) {
   var roomsql = 'select * from ROOM where RoomNO = ?';
   const login_sql = "select C.UserID, C.UserPW, A.RoomNO, A.WashNum, A.WashDay, A.WashTime, B.good, B.bad from ROOM A, student B, USER C where C.UserID = ? && B.StuNO = C.UserNO && A.RoomNO = B.StuRoom";
   const sql = 'select * from USER where UserID = ?';
-  connection.query(sql, id, function (err, result) {
+  connection.query(login_sql, id, function (err, result) {
     let resultCode = 404;
     let message = '에러가 발생했습니다';
     if (err)
@@ -118,30 +118,13 @@ router.post('/login', function (req, res) {
         num = result[0].UserNO;
         name = result[0].UserNAME;
         loc = result[0].UserLOC;
-        connection.query(stusql, num, function(err, result1) {
-          if(err) {
-            console.log(err);
-          }
-          else {
-            room = result1[0].StuRoom;
-            good = result1[0].good;
-            bad = result1[0].bad;
-            connection.query(roomsql, room, function(err, result3) {
-              if(err) {
-                console.log(room);
-                console.log(err);
-              }
-              else {
-                washday = result3[0].WashDay;
-                washnum = result3[0].WashNum;
-                washtime = result3[0].WashTime;
-              }
-            });
-          }
-          
-        });
-        
-        
+        room = result[0].RoomNO;
+        washday = result[0].WashDay;
+        washnum = result[0].WashNum;
+        washtime = result[0].WashTime;
+        good = result[0].good;
+        bad = result[0].bad;
+
         res.json({
           'code': resultCode,
           'message': message,
