@@ -150,7 +150,8 @@ router.post('/score', function(req, res) {
   const bad = req.body.bad;
   const name = req.body.StuName;
   const num = req.body.StuNO;
-  connection.query(`update student good = ${good}, bad = ${bad} where StuNO = ${num} && StuName = ${name}`, function(err, result) {
+  const sql = 'update student good = ?, bad = ? where StuNO = ? && StuName = ?';
+  connection.query(sql, [good, bad, num, name], function(err, result) {
     if(err) {
       console.log(err);
     }
