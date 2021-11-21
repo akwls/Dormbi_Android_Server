@@ -5,9 +5,6 @@ const router = express();
 
 const connection = require('../mysql');
 
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
-
 router.use(express.urlencoded({
   extended: false
 })); //application/x-www-form-urlencoded
@@ -164,5 +161,4 @@ router.post('/score', function(req, res) {
   })
 })
 
-router.listen(3000); // port 
 module.exports = router;
