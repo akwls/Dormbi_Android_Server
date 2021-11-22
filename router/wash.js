@@ -29,6 +29,21 @@ router.get('/washlist/:day', function(req, res) {
   })
 });
 
+router.get('/washlist/:day/:time', function(req, res) {
+  let day = req.params.day;
+  let time = req.params.time;
+  let sql = "select * from ROOM where WashDay = ? and WashTime = ?";
+  connection.query(sql, [day, time], function(err, result) {
+    if(err) {
+      return res.sendStatus(400); 
+    }
+    else {
+      res.json(result);
+      console.log("result : " + JSON.stringify(result));
+    }
+  })
+});
+
 
 
 module.exports = router;
