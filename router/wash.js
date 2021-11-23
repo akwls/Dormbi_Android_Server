@@ -44,11 +44,16 @@ router.get('/washlist/:day/:time', function(req, res) {
   })
 });
 
+let reservetest = {
+  RoomNO : 415,
+  WashTime : 2,
+  WashNum : 2
+}
 // 세탁기 예약
 router.post('/reserve', function(req, res) {
-  const room = req.body.RoomNO;
-  const time = req.body.WashTime;
-  const num = req.body.WashNum;
+  const room = reservetest.RoomNO;
+  const time = reservetest.WashTime;
+  const num = reservetest.WashNum;
   let today = new Date();
   const date = datetostring(today);
   var sql = 'select * from wash where WashTime = ? and WashNum = ? and date = ?';
@@ -57,6 +62,9 @@ router.post('/reserve', function(req, res) {
     let message;
     if(err) {
       console.log(err);
+      res.json({
+        message: "세탁기 예약 오류 발생" 
+      })
     }
     else {
       if(result.length > 0) {
@@ -75,13 +83,14 @@ router.post('/reserve', function(req, res) {
             resultCode = 200;
             message = "세탁기 예약이 완료되었습니다.";
           }
-          res.json({
-            'code': resultCode,
-            'message': message
-          });
+          
         })
       }
     }
+    res.json({
+      'code': resultCode,
+      'message': message
+    });
   })
 })
 
