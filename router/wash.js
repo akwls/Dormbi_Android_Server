@@ -53,6 +53,8 @@ router.post('/reserve', function(req, res) {
   const date = datetostring(today);
   var sql = 'select * from wash where WashTime = ? and WashNum = ? and date = ?';
   connection.query(sql, [time, num, date], function(err, result) {
+    let resultCode;
+    let message;
     if(err) {
       console.log(err);
     }
@@ -64,19 +66,19 @@ router.post('/reserve', function(req, res) {
       }
       else {
         connection.query(`insert into wash values (${room}, ${num}, ${time}, "${date}")`, function(err, result) {
-          let resultCode = 400;
-          let message = "에러가 발생했습니다.";
+          resultCode = 400;
+          message = "에러가 발생했습니다.";
           if(err) {
             console.log(err);
           }
           else {
             resultCode = 200;
-            message = "세탁기 예약이 완료되었습니다."
+            message = "세탁기 예약이 완료되었습니다.";
           }
           res.json({
             'code': resultCode,
             'message': message
-          })
+          });
         })
       }
     }
