@@ -79,14 +79,13 @@ router.post('/reserve', function(req, res) {
             resultCode = 200;
             message = "세탁기 예약이 완료되었습니다.";
           }
-          
+          res.json({
+            'code': resultCode,
+            'message': message
+          });
         })
       }
     }
-    res.json({
-      'code': resultCode,
-      'message': message
-    });
   })
 })
 
