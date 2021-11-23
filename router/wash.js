@@ -44,6 +44,68 @@ router.get('/washlist/:day/:time', function(req, res) {
   })
 });
 
+// 세탁기 예약
+router.post('/reserve', function(req, res) {
+  const room = req.body.RoomNO;
+  const time = req.body.WashTime;
+  const num = req.body.WashNum;
+  let today = new Date();
+  const date = datetostring(today);
+  var sql = 'select * from wash where WashTime = ? and WashNum = ? and date = ?';
+  connection.query(sql, [time, num, date], function(err, result) {
+    if(err) {
+      console.log(err);
+    }
+    else {
+      if(result.length > 0) {
+        res.json({
+          message: "이미 예약된 시간입니다."
+        })
+      }
+      else {
+        connection.query(`insert into wash values (${room}, ${num}, ${time}, "${date}")`, function(err, result) {
+          let resultCode = 400;
+          let message = "에러가 발생했습니다.";
+          if(err) {
+            console.log(err);
+          }
+          else {
+            resultCode = 200;
+            message = "세탁기 예약이 완료되었습니다."
+          }
+          res.json({
+            'code': resultCode,
+            'message': message
+          })
+        })
+      }
+    }
+  })
+})
+
+
+router.get('/reservelist/:date', function(req, res) {
+  let date = req.params.date;
+  let sql = "select * from wash where date = ?";
+  connection.query(sql, [date], function(err, result) {
+    if(err) {
+      return res.sendStatus(400); 
+    }
+    else {
+      res.json(result);
+      console.log("result : " + JSON.stringify(result));
+    }
+  })
+})
+
+function datetostring(date) {
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let day = date.getDate();
+  let res = year + "-" + (month+1)+"-"+day;
+  return res;
+}
+
 
 
 module.exports = router;
