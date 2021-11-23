@@ -44,16 +44,12 @@ router.get('/washlist/:day/:time', function(req, res) {
   })
 });
 
-let reservetest = {
-  RoomNO : 415,
-  WashTime : 2,
-  WashNum : 2
-}
+
 // 세탁기 예약
 router.post('/reserve', function(req, res) {
-  const room = reservetest.RoomNO;
-  const time = reservetest.WashTime;
-  const num = reservetest.WashNum;
+  const room = req.body.RoomNO;
+  const time = req.body.WashTime;
+  const num = req.body.WashNum;
   let today = new Date();
   const date = datetostring(today);
   var sql = 'select * from wash where WashTime = ? and WashNum = ? and date = ?';
@@ -61,7 +57,7 @@ router.post('/reserve', function(req, res) {
     let resultCode;
     let message;
     if(err) {
-      console.log(err);
+      console.log(err);         
       res.json({
         message: "세탁기 예약 오류 발생" 
       })
