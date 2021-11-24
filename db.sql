@@ -126,6 +126,6 @@ CREATE TABLE wash (
     RoomNO decimal(4) NOT NULL,
     WashNum SMALLINT NOT NULL,
     WashTime SMALLINT NOT NULL,
-    date DATE NOT NULL,
+    date varchar(15) NOT NULL,
     constraint FK_washRoomNO foreign key(RoomNO) references ROOM(RoomNO)
 );

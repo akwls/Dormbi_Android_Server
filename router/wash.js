@@ -29,17 +29,17 @@ router.get('/washlist/:day', function(req, res) {
   })
 });
 
-router.get('/washlist/:day/:time', function(req, res) {
+router.get('/washlist/:day/:time/:date', function(req, res) {
   let day = req.params.day;
   let time = req.params.time;
-  let sql = "select * from ROOM where WashDay = ? and WashTime = ?";
-  connection.query(sql, [day, time], function(err, result) {
+  let date = req.params.date;
+  let Roomsql = "select RoomNO, WashNum, WashTime from ROOM where WashTime = ? and WashDay = ? UNION select RoomNO, WashNum, WashTime from wash where WashTime = ? and date = ?";
+  connection.query(Roomsql, [time,day,time, date], function(err, result) {
     if(err) {
       return res.sendStatus(400); 
     }
     else {
       res.json(result);
-      console.log("result : " + JSON.stringify(result));
     }
   })
 });
@@ -111,7 +111,5 @@ function datetostring(date) {
   let res = year + "-" + (month+1)+"-"+day;
   return res;
 }
-
-
 
 module.exports = router;
