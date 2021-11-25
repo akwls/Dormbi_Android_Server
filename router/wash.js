@@ -104,6 +104,7 @@ router.get('/reservelist/:date', function(req, res) {
   })
 })
 
+
 function datetostring(date) {
   let year = date.getFullYear();
   let month = date.getMonth();
