@@ -129,3 +129,12 @@ CREATE TABLE wash (
     date varchar(15) NOT NULL,
     constraint FK_washRoomNO foreign key(RoomNO) references ROOM(RoomNO)
 );
+
+CREATE TABLE goout (
+    StuNO decimal(4) NOT NULL,
+    StuName varchar(20) NOT NULL,
+    StuRoom decimal(3) NOT NULL,
+    startDay varchar(15) NOT NULL,
+    endDay varchar(15) NOT NULL
+    pTel varchar(15) NOT NULL
+);
