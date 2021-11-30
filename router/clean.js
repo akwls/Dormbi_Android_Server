@@ -24,5 +24,38 @@ router.get('/cleanlist/:start', function(req, res) {
     });
 });
 
+router.get('/start/:floor/:month', function(req, res) {
+    let month = req.params.month;
+    let floor = req.params.floor;
+    let sql;
+    if(floor == 4) {
+        sql = 'select start_4 from clean where month = ?';
+        connection.query(sql, month, function(err, result) {
+            if(err) {
+                console.log(err);
+            }
+            else {
+                res.json({
+                    'start': result[0].start_4
+                });
+            }
+        })
+    }
+    else if(floor == 5) {
+        sql = 'select start_5 from clean where month = ?';
+        connection.query(sql, month, function(err, result) {
+            if(err) {
+                console.log(err);
+            }
+            else {
+                res.json({
+                    'start': result[0].start_5
+                });
+            }
+        })
+    }
+    
+})
+
 
 module.exports = router;

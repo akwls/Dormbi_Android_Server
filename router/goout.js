@@ -18,9 +18,11 @@ router.post('/list', function(req, res) {
     const start = req.body.startDay;
     const end = req.body.endDay;
     const tel = req.body.pTel;
-    var sql = 'insert into goout values(?, ?, ?, ?, ?, ?)';
+    let today = new Date();
+    const date = datetostring(today);
+    var sql = 'insert into goout values(?, ?, ?, ?, ?, ?, ?)';
     let message, code;
-    connection.query(sql, [num, name, room, start, end, tel], function(err, result) {
+    connection.query(sql, [num, name, room, start, end, tel, date], function(err, result) {
         if(err) {
             console.log(err);
             code = 400;
@@ -35,6 +37,14 @@ router.post('/list', function(req, res) {
             'message': message
         })
     })
-})
+});
+
+function datetostring(date) {
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let res = year + "-" + (month+1)+"-"+day;
+    return res;
+  }
 
 module.exports = router;

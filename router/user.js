@@ -161,4 +161,30 @@ router.post('/score', function(req, res) {
   })
 })
 
+router.delete('/out/:num/:password', function(req, res) {
+  const num = req.body.num;
+  const password = req.body.password;
+  let pw = bcryptjs.hashSync(password, 10);
+  const sql = 'select from user where UserNO = ? and UserPW = ?';
+  const dsql = 'delete from student where StuNO = ?';
+  connection.query(sql, [num, pw], function(err, result) {
+    if(err) {
+      console.log(err);
+    }
+    else {
+      connection.query(dsql, num, function(err, result) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          res.json({
+            'message': '퇴소 처리가 완료되었습니다.',
+            'code': 200
+          })
+        }
+      })
+    }
+  })
+})
+
 module.exports = router;

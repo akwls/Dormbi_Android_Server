@@ -135,6 +135,13 @@ CREATE TABLE goout (
     StuName varchar(20) NOT NULL,
     StuRoom decimal(3) NOT NULL,
     startDay varchar(15) NOT NULL,
-    endDay varchar(15) NOT NULL
-    pTel varchar(15) NOT NULL
+    endDay varchar(15) NOT NULL,
+    pTel varchar(15) NOT NULL,
+    writeDay varchar(15)
+);
+
+CREATE TABLE clean (
+    month smallint.
+    start_4 smallint,
+    start_5 smallint
 );
