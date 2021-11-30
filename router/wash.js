@@ -47,13 +47,20 @@ router.get('/washlist/:day/:time/:date', function(req, res) {
 
 
 // 세탁기 예약
-router.post('/reserve', function(req, res) {
+router.post('/reserve/:floor', function(req, res) {
   const room = req.body.RoomNO;
   const time = req.body.WashTime;
   const num = req.body.WashNum;
+  const floor = req.params.floor;
   let today = new Date();
   const date = datetostring(today);
-  var sql = 'select * from wash where WashTime = ? and WashNum = ? and date = ?';
+  var sql;
+  if(floor == 4) {
+    sql = 'select * from wash_4 where WashTime = ? and WashNum = ? and date = ?';
+  }
+  else if(floor == 5) {
+    sql = 'select * from wash_5 where WashTime = ? and WashNum = ? and date = ?';
+  }
   connection.query(sql, [time, num, date], function(err, result) {
     let resultCode;
     let message;
