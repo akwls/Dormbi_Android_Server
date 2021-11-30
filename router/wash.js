@@ -107,9 +107,16 @@ router.post('/reserve', function(req, res) {
 })
 
 
-router.get('/reservelist/:date', function(req, res) {
+router.get('/reservelist/:date/:floor', function(req, res) {
   let date = req.params.date;
-  let sql = "select * from wash where date = ?";
+  let floor = req.params.floor;
+  let sql;
+  if(floor == 4) {
+    sql = "select * from wash_4 where date = ?";
+  }
+  else if(floor == 5) {
+    sql = "select * from wash_5 where date = ?";
+  }
   connection.query(sql, [date], function(err, result) {
     if(err) {
       return res.sendStatus(400); 
