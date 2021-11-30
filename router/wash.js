@@ -42,7 +42,7 @@ router.get('/washlist/:day/:time/:date/:floor', function(req, res) {
   else if(floor == 5) {
     sql = "select RoomNO, WashNum, WashTime from ROOM where WashTime = ? and WashDay = ? and RoomFloor = ? UNION select RoomNO, WashNum, WashTime from wash_5 where WashTime = ? and date = ?";
   }
-  connection.query(sql, [time,day,time, date], function(err, result) {
+  connection.query(sql, [time,day,floor,time, date], function(err, result) {
     if(err) {
       return res.sendStatus(400); 
     }

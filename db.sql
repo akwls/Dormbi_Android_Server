@@ -186,12 +186,20 @@ INSERT INTO student (StuNO, StuName, StuRoom) VALUES
 (3618, "최중희", 516)
 ;
 
-CREATE TABLE wash (
+CREATE TABLE wash_4 (
     RoomNO decimal(4) NOT NULL,
     WashNum SMALLINT NOT NULL,
     WashTime SMALLINT NOT NULL,
     date varchar(15) NOT NULL,
     constraint FK_washRoomNO foreign key(RoomNO) references ROOM(RoomNO)
+);
+
+CREATE TABLE wash_5 (
+    RoomNO decimal(4) NOT NULL,
+    WashNum SMALLINT NOT NULL,
+    WashTime SMALLINT NOT NULL,
+    date varchar(15) NOT NULL,
+    constraint FK_washRoomNO_5 foreign key(RoomNO) references ROOM(RoomNO)
 );
 
 CREATE TABLE goout (
