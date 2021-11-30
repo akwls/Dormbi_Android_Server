@@ -57,11 +57,11 @@ router.post('/reserve', function(req, res) {
   var sql, subsql;
   if(floor == 4) {
     sql = 'select * from wash_4 where WashTime = ? and WashNum = ? and date = ?';
-    subsql = 'insert into wash_4 values (?, ?, ?, ?)';
+    subsql = `insert into wash_4 values (${room}, ${num}, ${time}, "${date}")`;
   }
   else if(floor == 5) {
     sql = 'select * from wash_5 where WashTime = ? and WashNum = ? and date = ?';
-    subsql = 'insert into wash_5 values (?, ?, ?, ?)';
+    subsql = `insert into wash_5 values (${room}, ${num}, ${time}, "${date}")`;
   }
   connection.query(sql, [time, num, date], function(err, result) {
     let resultCode;
@@ -79,7 +79,7 @@ router.post('/reserve', function(req, res) {
         })
       }
       else {
-        connection.query(subsql, [room, num, time, date], function(err, result) {
+        connection.query(subsql, function(err, result) {
           resultCode = 400;
           message = "에러가 발생했습니다.";
           if(err) {
