@@ -47,11 +47,11 @@ router.get('/washlist/:day/:time/:date', function(req, res) {
 
 
 // 세탁기 예약
-router.post('/reserve/:floor', function(req, res) {
+router.post('/reserve', function(req, res) {
   const room = req.body.RoomNO;
   const time = req.body.WashTime;
   const num = req.body.WashNum;
-  const floor = req.params.floor;
+  const floor = req.body.floor;
   let today = new Date();
   const date = datetostring(today);
   var sql;
