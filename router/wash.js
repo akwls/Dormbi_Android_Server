@@ -30,12 +30,19 @@ router.get('/washlist/:day/:floor', function(req, res) {
   })
 });
 
-router.get('/washlist/:day/:time/:date', function(req, res) {
+router.get('/washlist/:day/:time/:date/:floor', function(req, res) {
   let day = req.params.day;
   let time = req.params.time;
   let date = req.params.date;
-  let Roomsql = "select RoomNO, WashNum, WashTime from ROOM where WashTime = ? and WashDay = ? UNION select RoomNO, WashNum, WashTime from wash where WashTime = ? and date = ?";
-  connection.query(Roomsql, [time,day,time, date], function(err, result) {
+  let floor = req.params.floor;
+  let sql;
+  if(floor == 4) {
+    sql = "select RoomNO, WashNum, WashTime from ROOM where WashTime = ? and WashDay = ? and RoomFloor = ? UNION select RoomNO, WashNum, WashTime from wash_4 where WashTime = ? and date = ?";
+  }
+  else if(floor == 5) {
+    sql = "select RoomNO, WashNum, WashTime from ROOM where WashTime = ? and WashDay = ? and RoomFloor = ? UNION select RoomNO, WashNum, WashTime from wash_5 where WashTime = ? and date = ?";
+  }
+  connection.query(sql, [time,day,time, date], function(err, result) {
     if(err) {
       return res.sendStatus(400); 
     }
