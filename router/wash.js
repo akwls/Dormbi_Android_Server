@@ -15,10 +15,11 @@ router.get('/wash', function (req, res) {
   res.send('wash');
 });
 
-router.get('/washlist/:day', function(req, res) {
+router.get('/washlist/:day/:floor', function(req, res) {
   let day = req.params.day;
-  let sql = "select * from ROOM where WashDay = ?";
-  connection.query(sql, day, function(err, result) {
+  let floor = req.params.floor;
+  let sql = "select * from ROOM where WashDay = ? and RoomFloor = ?";
+  connection.query(sql, [day, floor], function(err, result) {
     if(err) {
       return res.sendStatus(400); 
     }
