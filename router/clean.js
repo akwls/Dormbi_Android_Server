@@ -13,6 +13,7 @@ router.get('/', function (req, res) {
     
 router.get('/cleanlist/:start/:floor', function(req, res) {
     let start = req.params.start;
+    let floor = req.params.floor;
     const sql = "select RoomNO, RoomNum, RoomFloor, CASE when RoomNum >= ? then '1' else '0' end NumPriority from ROOM where RoomFloor = ? order by NumPriority desc, RoomNum asc limit 7";
     connection.query(sql, [start, floor], function(err, result) {
         if(err) {
