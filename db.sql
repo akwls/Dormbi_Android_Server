@@ -187,7 +187,7 @@ CREATE TABLE goout (
 );
 
 CREATE TABLE clean (
-    month smallint.
+    month smallint,
     start_4 smallint,
     start_5 smallint
 );
