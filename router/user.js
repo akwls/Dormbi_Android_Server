@@ -91,10 +91,10 @@ router.post('/login', function (req, res) {
   const pw = req.body.UserPW;
   // const id = user_join_test.UserID;
   // const pw = user_join_test.UserPW;
-  var num, name, room, loc, washday, washtime, washnum, good, bad;
+  var num, name, room, loc, washday, washtime, washnum, good, bad, floor;
   var stusql = 'select * from student where StuNO = ?';
   var roomsql = 'select * from ROOM where RoomNO = ?';
-  const login_sql = "select C.UserID, C.UserPW, C.UserNAME, C.UserNO, C.UserLOC, A.RoomNO, A.WashNum, A.WashDay, A.WashTime, B.good, B.bad from ROOM A, student B, USER C where C.UserID = ? && B.StuNO = C.UserNO && A.RoomNO = B.StuRoom";
+  const login_sql = "select C.UserID, C.UserPW, C.UserNAME, C.UserNO, C.UserLOC, A.RoomNO, A.WashNum, A.WashDay, A.WashTime, A.RoomFloor, B.good, B.bad from ROOM A, student B, USER C where C.UserID = ? && B.StuNO = C.UserNO && A.RoomNO = B.StuRoom";
   const sql = 'select * from USER where UserID = ?';
   connection.query(login_sql, id, function (err, result) {
     let resultCode = 404;
@@ -119,6 +119,7 @@ router.post('/login', function (req, res) {
         washday = result[0].WashDay;
         washnum = result[0].WashNum;
         washtime = result[0].WashTime;
+        floor = result[0].RoomFloor;
         good = result[0].good;
         bad = result[0].bad;
 
@@ -131,6 +132,7 @@ router.post('/login', function (req, res) {
           'loc' : loc,
           'washday': washday,
           'washtime': washtime,
+          'floor': floor,
           'washnum': washnum,
           'good': good,
           'bad': bad
