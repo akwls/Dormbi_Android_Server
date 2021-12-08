@@ -59,6 +59,7 @@ router.post('/reserve', function(req, res) {
   const time = req.body.WashTime;
   const num = req.body.WashNum;
   const floor = req.body.floor;
+  const reserveDate = req.body.date;
   let today = new Date();
   const utcNow = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
   const koreaTimeDiff = 9 * 60 * 60 * 1000;
@@ -67,11 +68,11 @@ router.post('/reserve', function(req, res) {
   var sql, subsql;
   if(floor == 4) {
     sql = 'select * from wash_4 where WashTime = ? and WashNum = ? and date = ?';
-    subsql = `insert into wash_4 values (${room}, ${num}, ${time}, "${date}")`;
+    subsql = `insert into wash_4 values (${room}, ${num}, ${time}, "${reserveDate}")`;
   }
   else if(floor == 5) {
     sql = 'select * from wash_5 where WashTime = ? and WashNum = ? and date = ?';
-    subsql = `insert into wash_5 values (${room}, ${num}, ${time}, "${date}")`;
+    subsql = `insert into wash_5 values (${room}, ${num}, ${time}, "${reserveDate}")`;
   }
   connection.query(sql, [time, num, date], function(err, result) {
     let resultCode;
