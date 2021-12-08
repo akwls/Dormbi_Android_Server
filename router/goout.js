@@ -19,7 +19,10 @@ router.post('/list', function(req, res) {
     const end = req.body.endDay;
     const tel = req.body.pTel;
     let today = new Date();
-    const date = datetostring(today);
+    const utcNow = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
+  const koreaTimeDiff = 9 * 60 * 60 * 1000;
+  const koreaNow = new Date(utcNow + koreaTimeDiff);
+    const date = datetostring(koreaNow);
     var sql = 'insert into goout values(?, ?, ?, ?, ?, ?, ?)';
     let message, code;
     connection.query(sql, [num, name, room, start, end, tel, date], function(err, result) {

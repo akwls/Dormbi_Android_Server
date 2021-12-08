@@ -60,7 +60,10 @@ router.post('/reserve', function(req, res) {
   const num = req.body.WashNum;
   const floor = req.body.floor;
   let today = new Date();
-  const date = datetostring(today);
+  const utcNow = today.getTime() + (today.getTimezoneOffset() * 60 * 1000);
+  const koreaTimeDiff = 9 * 60 * 60 * 1000;
+  const koreaNow = new Date(utcNow + koreaTimeDiff);
+  const date = koreaNow.getFullYear + '-' + (koreaNow.getMonth()+1) + "-"+koreaNow.getDate();
   var sql, subsql;
   if(floor == 4) {
     sql = 'select * from wash_4 where WashTime = ? and WashNum = ? and date = ?';
